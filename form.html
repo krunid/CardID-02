@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>กรอกข้อมูลบัตรใหม่</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6a5acd;
+      --primary-dark: #5849b8;
+      --primary-light: #8677de;
+      --secondary: #9c27b0;
+      --text: #333;
+      --text-light: #666;
+      --bg: #f7f9ff;
+      --card-bg: #fff;
+      --border-radius: 12px;
+      --shadow: 0 4px 12px rgba(106, 90, 205, 0.15);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background: var(--primary);
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      background: var(--primary-dark);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    .page-title {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      font-size: 1.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .page-title::before {
+      content: "📝";
+      font-size: 1.75rem;
+    }
+
+    .form-section {
+      background: #f7f7ff;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(106, 90, 205, 0.2);
+    }
+
+    input[type="file"] {
+      padding: 0.5rem;
+      background: #f0f0f0;
+      cursor: pointer;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .file-preview {
+      margin-top: 0.5rem;
+      max-width: 150px;
+      max-height: 150px;
+      border-radius: 8px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .file-preview img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .skill-btn {
+      background: #f0f0f0;
+      color: var(--text);
+      border: 1px solid #ddd;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .skill-btn:hover {
+      background: #e8e8e8;
+    }
+
+    .skill-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary-dark);
+    }
+
+    .custom-skill-input {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .custom-skill-input input {
+      flex: 1;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: #f0f0ff;
+    }
+
+    /* Card Preview Modal */
+    #cardPreview {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      max-width: 450px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .modal-title {
+      margin-bottom: 1rem;
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+
+    .cardBox {
+      width: 280px;
+      margin: 0 auto 1.5rem;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-header img {
+      width: 40px;
+      height: auto;
+    }
+
+    .card-body {
+      padding: 1.2rem;
+      text-align: left;
+    }
+
+    .preview-img-wrapper {
+      width: 60%;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      overflow: hidden;
+      aspect-ratio: 1/1;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      border: 3px solid white;
+    }
+
+    .preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-name {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .card-dept {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 0.8rem;
+    }
+
+    .card-skills-title {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .card-footer {
+      border-top: 1px dashed #eee;
+      padding-top: 0.8rem;
+      margin-top: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    .card-id {
+      font-family: monospace;
+      font-weight: 600;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .close-modal {
+      background: #f0f0f0;
+      color: var(--text);
+      transition: var(--transition);
+    }
+
+    .close-modal:hover {
+      background: #e0e0e0;
+    }
+
+    /* Custom Alert Popup */
+    #customAlert {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .alert-content {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    .alert-title {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .alert-message {
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .alert-button {
+      background: var(--primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .alert-button:hover {
+      background: var(--primary-dark);
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--primary-light);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      margin: 0.15rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+        margin: 1rem;
+      }
+
+      .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .cardBox {
+        width: 260px;
+      }
+
+      .preview-img-wrapper {
+        width: 70%;
+      }
+
+      .modal-content {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">ระบบจัดการบัตรประจำตัว</a>
+      <div class="nav-links">
+        <a href="form.html">กรอกข้อมูลบัตรใหม่</a>
+        <a href="list.html">รายชื่อที่บันทึกไว้</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1 class="page-title">กรอกข้อมูลบัตรใหม่</h1>
+    
+    <div class="form-section">
+      <div class="form-group">
+        <label for="nameInput">ชื่อ - นามสกุล</label>
+        <input type="text" id="nameInput" placeholder="ระบุชื่อและนามสกุล">
+      </div>
+      
+      <div class="form-group">
+        <label for="deptInput">หน่วยงาน</label>
+        <input type="text" id="deptInput" placeholder="ระบุหน่วยงาน">
+      </div>
+      
+      <div class="form-group">
+        <label for="imageInput">อัปโหลดรูปภาพ</label>
+        <div class="file-input-wrapper">
+          <input type="file" id="imageInput" accept="image/*">
+          <div class="file-preview" id="imagePreview">
+            <img src="" id="previewUpload" alt="ตัวอย่างรูปภาพ">
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>ความสามารถ</label>
+        <div class="skills-container" id="skillInput"></div>
+        
+        <div class="custom-skill-input">
+          <input type="text" id="customSkill" placeholder="เพิ่มความสามารถอื่น ๆ" onkeydown="if(event.key==='Enter'){addCustomSkill()}">
+          <button class="btn btn-secondary" onclick="addCustomSkill()">เพิ่ม</button>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn btn-primary" onclick="previewCard()">👁️ แสดงตัวอย่างบัตร</button>
+        <button class="btn btn-secondary" onclick="resetForm()">❌ ล้างข้อมูล</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cardPreview">
+    <div class="modal-content">
+      <h2 class="modal-title">ตัวอย่างบัตรประจำตัว</h2>
+      
+      <div class="cardBox" id="cardBox">
+        <div class="card-header">
+          <div>
+            <div style="font-weight: 600; font-size: 1.1rem;">สำนักตักศิลา</div>
+            <div style="font-size: 0.8rem;">บัตรประจำตัวบุคลากร</div>
+            <div id="cardId" class="card-id">ID: TKS-1234</div>
+          </div>
+          <img src="https://krunid.github.io/knid13/Taksira03.png" alt="logo" crossOrigin="anonymous">
+        </div>
+        
+        <div class="card-body">
+          <div class="preview-img-wrapper">
+            <img id="previewImg" class="preview-img" src="" alt="รูปบุคลากร" crossOrigin="anonymous">
+          </div>
+          
+          <h3 id="previewName" class="card-name">ชื่อ : ...</h3>
+          <h4 id="previewDept" class="card-dept">หน่วยงาน : ...</h4>
+          
+          <div class="card-skills-title">ความสามารถ:</div>
+          <div id="previewSkills" class="card-skills"></div>
+          
+          <div class="card-footer">
+            <div>
+              <div id="cardDate" class="card-date"></div>
+              <div>ลงชื่อ: สมพงษ์ โพคาศรี</div>
+            </div>
+            <div class="qr-code">📱</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-buttons">
+        <button class="btn btn-primary" onclick="downloadCardAsImage()">💾 ดาวน์โหลด PNG</button>
+        <button class="btn close-modal" onclick="document.getElementById('cardPreview').style.display='none'">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="customAlert">
+    <div class="alert-content">
+      <h3 class="alert-title">แจ้งเตือน</h3>
+      <p class="alert-message" id="alertMessage"></p>
+      <button class="alert-button" onclick="closeCustomAlert()">ตกลง</button>
+    </div>
+  </div>
+
+<script>
+// ข้อมูลความสามารถ
+const skillList = ["การสอน", "วิจัย", "บริหาร", "เทคโนโลยี", "นวัตกรรม", "ภาษา", "ศิลปะ", "วัฒนธรรม", "คอมพิวเตอร์", "การเงิน"];
+const skillContainer = document.getElementById("skillInput");
+
+// สร้างปุ่มความสามารถ
+skillList.forEach(skill => {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "skill-btn";
+  btn.textContent = skill;
+  btn.dataset.skill = skill;
+  btn.onclick = () => btn.classList.toggle("active");
+  skillContainer.appendChild(btn);
+});
+
+// แสดงตัวอย่างรูปภาพที่อัปโหลด
+document.getElementById('imageInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('previewUpload').src = e.target.result;
+      document.getElementById('imagePreview').style.display = 'block';
+    }
+    reader.readAsDataURL(file);
+  }
+});
+
+// เพิ่มความสามารถใหม่
+function addCustomSkill() {
+  const customSkillInput = document.getElementById("customSkill");
+  const val = customSkillInput.value.trim();
+  if (!val) return;
+  
+  const existingSkills = Array.from(document.querySelectorAll('.skill-btn')).map(btn => btn.dataset.skill);
+  if (existingSkills.includes(val)) {
+    document.querySelector(`.skill-btn[data-skill="${val}"]`).classList.add('active');
+  } else {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "skill-btn active";
+    btn.textContent = val;
+    btn.dataset.skill = val;
+    btn.onclick = () => btn.classList.toggle("active");
+    skillContainer.appendChild(btn);
+  }
+  
+  customSkillInput.value = "";
+}
+
+// ฟังก์ชันแสดง custom alert
+function showCustomAlert(message) {
+  document.getElementById('alertMessage').innerText = message;
+  document.getElementById('customAlert').style.display = 'flex';
+}
+
+function closeCustomAlert() {
+  document.getElementById('customAlert').style.display = 'none';
+}
+
+// ฟังก์ชันรอโหลดรูปภาพ
+function waitForImages(element) {
+  return new Promise((resolve, reject) => {
+    const images = element.querySelectorAll('img');
+    let loadedCount = 0;
+    const totalImages = images.length;
+
+    if (totalImages === 0) {
+      resolve();
+      return;
+    }
+
+    images.forEach(img => {
+      if (img.complete && img.naturalWidth !== 0) {
+        loadedCount++;
+        if (loadedCount === totalImages) resolve();
+      } else {
+        img.onload = () => {
+          loadedCount++;
+          if (loadedCount === totalImages) resolve();
+        };
+        img.onerror = () => reject(new Error(`Failed to load image: ${img.src}`));
+      }
+    });
+  });
+}
+
+// เก็บข้อมูลในตัวแปรหน่วยความจำ
+let cardDataMemory = JSON.parse(localStorage.getItem('cardData')) || [];
+
+// บันทึกข้อมูล
+function saveToLocal(name, dept, skills, image) {
+  cardDataMemory.push({ name, dept, skills, image });
+  localStorage.setItem('cardData', JSON.stringify(cardDataMemory));
+}
+
+// แสดงตัวอย่างบัตร
+function previewCard() {
+  const name = document.getElementById('nameInput').value.trim();
+  const dept = document.getElementById('deptInput').value.trim();
+  const skills = Array.from(document.querySelectorAll('.skill-btn.active')).map(btn => btn.dataset.skill);
+  const imageInput = document.getElementById('imageInput');
+  
+  if (!name) {
+    showCustomAlert('กรุณากรอกชื่อ-นามสกุล');
+    document.getElementById('nameInput').focus();
+    return;
+  }
+  
+  if (!dept) {
+    showCustomAlert('กรุณากรอกหน่วยงาน');
+    document.getElementById('deptInput').focus();
+    return;
+  }
+  
+  if (skills.length === 0) {
+    showCustomAlert('กรุณาเลือกความสามารถอย่างน้อย 1 รายการ');
+    return;
+  }
+  
+  if (!imageInput.files[0]) {
+    showCustomAlert('กรุณาอัปโหลดรูปภาพ');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const imageData = e.target.result;
+    
+    const previewImg = document.getElementById('previewImg');
+    previewImg.src = imageData;
+    previewImg.crossOrigin = 'anonymous';
+    
+    document.getElementById('previewName').innerText = 'ชื่อ : ' + name;
+    document.getElementById('previewDept').innerText = 'หน่วยงาน : ' + dept;
+    document.getElementById('previewSkills').innerHTML = skills.map(s => `<span class='tag'>${s}</span>`).join('');
+    
+    document.getElementById('cardId').innerText = 'ID: TKS-' + Math.floor(Math.random() * 9000 + 1000);
+    
+    const now = new Date();
+    const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    document.getElementById('cardDate').innerText = `วันออกบัตร: ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear() + 543}`;
+    
+    document.getElementById('cardPreview').style.display = 'flex';
+    
+    saveToLocal(name, dept, skills, imageData);
+  }
+  reader.readAsDataURL(imageInput.files[0]);
+}
+
+// ดาวน์โหลดบัตรเป็นรูปภาพ
+async function downloadCardAsImage() {
+  const card = document.getElementById('cardBox');
+  const name = document.getElementById('previewName').innerText.replace('ชื่อ : ', '').trim().replace(/[\s\/\\:*\?"<>|]+/g, '_') || 'id-card';
+
+  try {
+    // รอให้รูปภาพโหลดครบถ้วน
+    await waitForImages(card);
+
+    // เพิ่มการหน่วงเวลาเล็กน้อยเพื่อให้แน่ใจว่า DOM อัปเดตแล้ว
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    const canvas = await html2canvas(card, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      backgroundColor: '#ffffff',
+      logging: true
+    });
+
+    if (!canvas || canvas.width === 0 || canvas.height === 0) {
+      throw new Error('Canvas is empty or invalid');
+    }
+
+    const link = document.createElement('a');
+    link.download = `${name}.png`;
+    link.href = canvas.toDataURL('image/png', 1.0);
+    link.click();
+  } catch (error) {
+    console.error('เกิดข้อผิดพลาดในการดาวน์โหลด:', error);
+    showCustomAlert(`ไม่สามารถดาวน์โหลดรูปภาพได้: ${error.message}`);
+  }
+}
+
+// ล้างฟอร์ม
+function resetForm() {
+  document.getElementById('nameInput').value = '';
+  document.getElementById('deptInput').value = '';
+  document.getElementById('imageInput').value = '';
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('customSkill').value = '';
+  
+  document.querySelectorAll('.skill-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+}
+
+// ตรวจสอบการโหลด html2canvas
+window.onload = function() {
+  if (typeof html2canvas === 'undefined') {
+    console.error('html2canvas ไม่ได้โหลดสำเร็จ');
+    showCustomAlert('ไม่สามารถโหลด html2canvas ได้ กรุณารีเฟรชหน้า');
+  } else {
+    console.log('html2canvas โหลดสำเร็จ');
+  }
+};
+</script>
+</body>
+</html>
